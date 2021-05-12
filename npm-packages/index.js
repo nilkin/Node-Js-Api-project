@@ -1,4 +1,11 @@
-import { contains } from "underscore";
 
-let result = contains([1, 2, 3], 2);
-console.log(result);
+'use strict';
+const express = require("express");
+const app = express();
+app.get('/', (req, res) => {
+    res.send('hello qaqa !!!')
+});
+app.get('/api/courses', (req, res) => {
+    res.send([1, 2, 3])
+});
+app.listen(3000, () => console.log("listening on port 3000....."))
