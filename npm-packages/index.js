@@ -1,5 +1,6 @@
 'use strict';
-const uuid = require("uuid");
+const config = require('config');
+const uuid = require('uuid');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const Joi = require('joi');
@@ -11,7 +12,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('assets'));
 app.use(helmet());
 
-if (app.get('env')==='development') {
+console.log('App name: ' + config.get('name'));
+console.log('Mail server: ' + config.get('mail.host'));
+console.log('Password of mail: ' + config.get('mail.password'));
+
+if (app.get('env') === 'development') {
     app.use(morgan('tiny'));
     console.log('Morgan enaibled...');
 };
