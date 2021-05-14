@@ -8,6 +8,9 @@ const Joi = require('joi');
 const express = require('express');
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', './views'); // by default
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('assets'));
@@ -28,7 +31,7 @@ const courses = [
     { id: uuid.v4(), name: "courses3" },
 ];
 app.get('/', (req, res) => {
-    res.send('<H1>Hello World!!!</H1>')
+    res.render('index',{title:"My express App" , message:"Hello"})
 });
 app.get('/api/courses', (req, res) => {
     res.send(courses)
