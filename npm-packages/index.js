@@ -1,4 +1,5 @@
 'use strict';
+const debug = require('debug')('app:startup');
 const config = require('config');
 const uuid = require('uuid');
 const morgan = require('morgan');
@@ -18,7 +19,7 @@ console.log('Password of mail: ' + config.get('mail.password'));
 
 if (app.get('env') === 'development') {
     app.use(morgan('tiny'));
-    console.log('Morgan enaibled...');
+    debug('Morgan enaibled...');
 };
 
 const courses = [
