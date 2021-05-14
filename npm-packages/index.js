@@ -1,13 +1,25 @@
-
 'use strict';
-const Joi = require('joi')
+const uuid = require("uuid");
+const morgan = require('morgan');
+const helmet = require('helmet');
+const Joi = require('joi');
 const express = require('express');
 const app = express();
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('assets'));
+app.use(helmet());
+
+if (app.get('env')==='development') {
+    app.use(morgan('tiny'));
+    console.log('Morgan enaibled...');
+};
+
 const courses = [
-    { id: 1, name: "courses1" },
-    { id: 2, name: "courses2" },
-    { id: 3, name: "courses3" },
+    { id: uuid.v4(), name: "courses1" },
+    { id: uuid.v4(), name: "courses2" },
+    { id: uuid.v4(), name: "courses3" },
 ];
 app.get('/', (req, res) => {
     res.send('<H1>Hello World!!!</H1>')
@@ -22,7 +34,7 @@ app.post('/api/courses', (req, res) => {
         return;
     };
     const course = {
-        id: courses.length + 1,
+        id: uuid.v4(),
         name: req.body.name
     };
     courses.push(course);
@@ -37,12 +49,12 @@ app.put('/api/courses/:id', (req, res) => {
     res.send(course)
 });
 app.get('/api/courses/:id', (req, res) => {
-    const course = courses.find(c => c.id === parseInt(req.params.id));
+    const course = courses.find(c => c.id == req.params.id);
     if (!course) return res.status(404).send(`The course with the given ID was not found.`);
     res.send(course);
 });
 app.delete('/api/courses/:id', (req, res) => {
-    const course = courses.find(c => c.id === parseInt(req.params.id));
+    const course = courses.find(c => c.id == req.params.id);
     if (!course) return res.status(404).send(`The course with the given ID was not found.`);
     const index = courses.indexOf(course);
     courses.splice(index, 1)
