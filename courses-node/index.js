@@ -1,22 +1,28 @@
 'use strict';
+const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const debug = require('debug')('app:startup');
 const config = require('config');
 const courses = require('./routes/courses');
+const customers = require('./routes/customers');
 const home = require('./routes/home');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
 const helmet = require('helmet');
 
+mongoose.connect('mongodb://localhost/courses',{ useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDb....'))
+    .catch(err => console.error('Could not connect to MongoDb....,',err.message));
+
 app.set('view engine', 'pug');
 app.set('views', './views'); // by default
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('assets'));
 app.use(helmet());
 app.use('/api/courses', courses);
+app.use('/api/customers', customers);
 app.use('/', home);
 app.use(logger);
 
