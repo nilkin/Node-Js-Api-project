@@ -1,5 +1,6 @@
 const {Course,validate} = require('../models/course');
 const express = require('express');
+const { Subject } = require('../models/subject');
 const router = express.Router();
 // const mongoose = require('mongoose');
 // mongoose.set('useFindAndModify', false);
@@ -14,7 +15,19 @@ router.post('/', async (req, res) => {
         res.status(400).send(error.details[0].message);
         return;
     };
-    let course = new Course({ name: req.body.name });
+
+    const subject = await Subject.findById(req.body.subjectId);
+    if (!subject) return res.status(400).send('Invalid subject.')
+
+    let course = new Course({ 
+        name: req.body.name ,
+        subject:{
+            _id:subject._id,
+            name:subject.name
+        },
+        numberInStock:req.body.numberInStock,
+        dailyRentalRate: req.body.dailyRentalRate
+    });
     course = await course.save();
     res.send(course)
 });

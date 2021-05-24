@@ -6,6 +6,7 @@ const debug = require('debug')('app:startup');
 const config = require('config');
 const courses = require('./routes/courses');
 const customers = require('./routes/customers');
+const subjects = require('./routes/subjects');
 const home = require('./routes/home');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
@@ -23,6 +24,7 @@ app.use(express.static('assets'));
 app.use(helmet());
 app.use('/api/courses', courses);
 app.use('/api/customers', customers);
+app.use('/api/subjects', subjects);
 app.use('/', home);
 app.use(logger);
 
