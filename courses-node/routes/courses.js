@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     const subject = await Subject.findById(req.body.subjectId);
     if (!subject) return res.status(400).send('Invalid subject.')
 
-    let course = new Course({ 
+    const course = new Course({ 
         name: req.body.name ,
         subject:{
             _id:subject._id,
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
         numberInStock:req.body.numberInStock,
         dailyRentalRate: req.body.dailyRentalRate
     });
-    course = await course.save();
+    await course.save();
     res.send(course)
 });
 router.put('/:id', async (req, res) => {

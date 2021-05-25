@@ -12,10 +12,10 @@ router.post('/', async (req, res) => {
         res.status(400).send(error.details[0].message);
         return;
     };
-    let subject = new Subject({
+    const subject = new Subject({
         name: req.body.name,
     });
-    subject = await subject.save();
+    await subject.save();
     res.send(subject)
 });
 router.put('/:id', async (req, res) => {
