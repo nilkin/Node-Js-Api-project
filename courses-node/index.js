@@ -6,6 +6,7 @@ const debug = require('debug')('app:startup');
 const config = require('config');
 const courses = require('./routes/courses');
 const customers = require('./routes/customers');
+const rentals = require('./routes/rentals');
 const subjects = require('./routes/subjects');
 const home = require('./routes/home');
 const morgan = require('morgan');
@@ -25,6 +26,7 @@ app.use(helmet());
 app.use('/api/courses', courses);
 app.use('/api/customers', customers);
 app.use('/api/subjects', subjects);
+app.use('/api/rentals', rentals);
 app.use('/', home);
 app.use(logger);
 
@@ -36,9 +38,6 @@ if (app.get('env') === 'development') {
     app.use(morgan('tiny'));
     debug('Morgan enaibled...');
 };
-
-
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening on port ${port}.....`))

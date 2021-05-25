@@ -4,7 +4,8 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
     name: {
         type: String,
         required: true,
-
+        minlength: 5,
+        maxlength: 50
     },
     isGold: {
         type: Boolean,
@@ -13,7 +14,8 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
     phone: {
         type: String,
         required: true,
-
+        minlength: 5,
+        maxlength: 50
     }
 }));
 function validateCustomer(customer) {

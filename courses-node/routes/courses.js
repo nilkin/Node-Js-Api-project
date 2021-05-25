@@ -35,7 +35,8 @@ router.put('/:id', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const course = await Course.findByIdAndUpdate(req.params.id, { name: req.body.name },
+    const course = await Course.findByIdAndUpdate(req.params.id, 
+        { name: req.body.name },
         { new: true })
 
     if (!course) return res.status(404).send(`The course with the given ID was not found.`);
