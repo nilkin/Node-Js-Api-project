@@ -10,14 +10,15 @@ const courses = require('./routes/courses');
 const customers = require('./routes/customers');
 const rentals = require('./routes/rentals');
 const subjects = require('./routes/subjects');
+const users = require('./routes/users');
 const home = require('./routes/home');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
 const helmet = require('helmet');
 
-mongoose.connect('mongodb://localhost/courses',{ useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/courses', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDb....'))
-    .catch(err => console.error('Could not connect to MongoDb....,',err.message));
+    .catch(err => console.error('Could not connect to MongoDb....,', err.message));
 
 app.set('view engine', 'pug');
 app.set('views', './views'); // by default
@@ -28,6 +29,7 @@ app.use(helmet());
 app.use('/api/courses', courses);
 app.use('/api/customers', customers);
 app.use('/api/subjects', subjects);
+app.use('/api/users', users);
 app.use('/api/rentals', rentals);
 app.use('/', home);
 app.use(logger);
@@ -42,4 +44,4 @@ if (app.get('env') === 'development') {
 };
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`listening on port ${port}.....`))
+app.listen(port, () => console.log(`listening on port http://localhost:${port}`))
