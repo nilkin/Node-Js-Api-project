@@ -36,6 +36,10 @@ app.use('/api/rentals', rentals);
 app.use('/', home);
 app.use(logger);
 
+if (!config.get('jwtPrivateKey')) {
+    console.log('FATAL ERROR: jwtPrivateKey is not defined');
+    process.exit(1);
+}
 console.log('App name: ' + config.get('name'));
 console.log('Mail server: ' + config.get('mail.host'));
 console.log('Password of mail: ' + config.get('mail.password'));
