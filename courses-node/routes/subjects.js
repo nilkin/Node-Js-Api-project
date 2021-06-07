@@ -1,12 +1,14 @@
-const {Subject,validate} = require('../models/subject');
+const { Subject, validate } = require('../models/subject');
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const subjects = await Subject.find().sort('name');
     res.send(subjects)
 });
-router.post('/', async (req, res) => {
+router.post('/',auth, async (req, res) => {
     const { error } = validate(req.body);
     if (error) {
         res.status(400).send(error.details[0].message);
@@ -18,7 +20,7 @@ router.post('/', async (req, res) => {
     await subject.save();
     res.send(subject)
 });
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth,async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -31,12 +33,12 @@ router.put('/:id', async (req, res) => {
     if (!subject) return res.status(404).send(`The subject with the given ID was not found.`);
     res.send(subject)
 });
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',[auth,admin], async (req, res) => {
     const subject = await Subject.findByIdAndDelete(req.params.id);
     if (!subject) return res.status(404).send(`The subject with the given ID was not found.`);
     res.send(subject);
 });
-router.get('/:id', async (req, res) => {
+router.get('/:id',auth, async (req, res) => {
     const subject = await Subject.findById(req.params.id);
     if (!subject) return res.status(404).send(`The subject with the given ID was not found.`);
     res.send(subject)

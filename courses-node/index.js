@@ -42,7 +42,7 @@ if (!config.get('jwtPrivateKey')) {
 }
 console.log('App name: ' + config.get('name'));
 console.log('Mail server: ' + config.get('mail.host'));
-console.log('Password of mail: ' + config.get('mail.password'));
+// console.log('Password of mail: ' + config.get('mail.password'));
 
 if (app.get('env') === 'development') {
     app.use(morgan('tiny'));
