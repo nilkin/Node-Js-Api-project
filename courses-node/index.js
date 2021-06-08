@@ -1,4 +1,5 @@
 'use strict';
+require('express-async-errors');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
@@ -34,6 +35,7 @@ app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/rentals', rentals);
 app.use('/', home);
+
 app.use(logger);
 
 if (!config.get('jwtPrivateKey')) {

@@ -1,6 +1,5 @@
-function log(req, res, next) {
-    console.log('logging.....');
-    next();
-}
 
-module.exports = log;
+module.exports = function (err, req, res, next) {
+    console.log('logging.....');
+    res.status(500).send('Something failed.');
+};
