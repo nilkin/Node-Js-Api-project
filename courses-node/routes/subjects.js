@@ -5,8 +5,8 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
-        const subjects = await Subject.find().sort('name');
-        res.send(subjects);
+    const subjects = await Subject.find().sort('name');
+    res.send(subjects);
 
 });
 router.post('/', auth, async (req, res) => {

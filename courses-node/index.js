@@ -1,5 +1,7 @@
 'use strict';
 require('express-async-errors');
+const winston = require('winston');
+require('winston-mongodb')
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
@@ -18,9 +20,27 @@ const morgan = require('morgan');
 const logger = require('./middleware/logger');
 const helmet = require('helmet');
 
-mongoose.connect('mongodb://localhost/courses', { useNewUrlParser: true, useUnifiedTopology: true })
+winston.handleExceptions(
+    new winston.transports.File({ filename: 'uncaughtExceptions.log' })
+);
+process.on('unhandledRejection', (ex) => {
+    throw ex;
+});
+
+winston.add(new winston.transports.File({ filename: 'logfile.log', 'timestamp': true }));
+winston.add(new winston.transports.MongoDB({ db: "mongodb://localhost/courses" }));
+
+Promise.reject(new Error('something get wrong')).then(() => console.log('done'));
+
+if (!config.get('jwtPrivateKey')) {
+    console.log('FATAL ERROR: jwtPrivateKey is not defined');
+    process.exit(1);
+}
+mongoose.connect('mongodb://localhost/courses', { useUnifiedTopology: true, useNewUrlParser: true })
     .then(() => console.log('Connected to MongoDb....'))
     .catch(err => console.error('Could not connect to MongoDb....,', err.message));
+
+// throw new Error('something get wrong'); testing uncaught errors
 
 app.set('view engine', 'pug');
 app.set('views', './views'); // by default
@@ -38,10 +58,8 @@ app.use('/', home);
 
 app.use(logger);
 
-if (!config.get('jwtPrivateKey')) {
-    console.log('FATAL ERROR: jwtPrivateKey is not defined');
-    process.exit(1);
-}
+
+
 console.log('App name: ' + config.get('name'));
 console.log('Mail server: ' + config.get('mail.host'));
 // console.log('Password of mail: ' + config.get('mail.password'));
